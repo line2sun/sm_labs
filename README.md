@@ -139,8 +139,53 @@ object and sends it to `PyGame`'s mixer in order to play it.
 
 #### Task1: Develop a desktop application that shows in real time the input from your webcam.
 
+`OpenCV` provides a very simple interface to capture live stream with camera.
+To capture a video, we need to create a `VideoCapture` object. 
+Its argument can be either the device index or the name of a video file. 
+Device index is just the number to specify which camera. 
+
+__Note:__ It is possible to select the second camera by passing 1 and so on. 
+
+After that, you can capture frame-by-frame. 
+__Note2:__ Don’t forget to release the capture. ;)
+
+1. Initialize a `VideoCapture` object:
+        
+        import numpy as np
+        import cv2
+
+        cap = cv2.VideoCapture(0)
+        
+2. The frames are captured in n infinite loop.
 
 
+        while(True):
+            ret, frame = cap.read()
+        
+            # Our operations on the frame come here
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
+            # Display the resulting frame
+            cv2.imshow('frame',gray)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
 
+3. With `cap.read()` we capture frames from WEB Camera.
+
+4. It is also possible to choose the color processing of each frame by passing `cv2.COLOR_BGR2GRAY` as an argument.
+
+5. Show the image with the `OpenCV`'s `imshow()`.
+
+6. Lines 18 and 19 hold the logic of quiting the app when the stuff is done, by catching the pressing of `q` key.
+
+7. And, of course don't forget to clean up the things, by calling the `release()` method over `VideoCapture` instance:
+
+        cap.release()
+        cv2.destroyAllWindows()
+
+
+#### Output task 1
+
+![output task 1](https://github.com/line2sun/sm_labs/blob/master/lab3/misc/Screenshot%202015-06-05%2010.48.40.png "output for Task 1")
 
 
