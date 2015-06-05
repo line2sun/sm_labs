@@ -1,5 +1,18 @@
 # Multimedia Systems Laboratory Works
 
+## Requirements & Installation
+
+* [OpenCV](https://jjyap.wordpress.com/2014/05/24/installing-opencv-2-4-9-on-mac-osx-with-python-support/)
+* [NumPy](http://www.scipy.org/scipylib/download.html)
+* [PyGame](http://www.reddit.com/r/pygame/comments/21tp7n/how_to_install_pygame_on_osx_mavericks/)
+* [pydub](https://github.com/jiaaro/pydub#installation)
+
+__Note:__ `NumPy` package comes along with `SciPy` library.
+
+
+__Note2:__ I run OS X 10.10, in case that some scripts aren't running as expected, 
+contact me at [pascaripavel@gmail.com](pascaripavel@gmail.com). 
+
 
 ## Lab 1: Image Processing
 
@@ -53,7 +66,7 @@ By default, interpolation method used is `cv2.INTER_LINEAR` for all resizing pur
 ![output task 1](https://github.com/line2sun/sm_labs/blob/master/lab1/misc/Screenshot%202015-06-05%2011.23.16.png "output for Task 1")
 
 
-#### Task1: Rotate an image at 90 degrees
+#### Task2: Rotate an image at 90 degrees
 
 To obtain the rotation of an image we simply have to change the method of obtaining the image matrices. 
 __OpenCV__ provides scaled rotation with adjustable center of rotation so that you can rotate at any location you prefer.
@@ -72,6 +85,59 @@ And use the same methods for displaying the images.
 #### Output task 2
 
 ![output task 2](https://github.com/line2sun/sm_labs/blob/master/lab1/misc/Screenshot%202015-06-05%2011.23.33.png "output for Task 2")
+
+
+
+
+# Lab 2: Audio Processing
+
+#### Task1: Play 2 audio files simultaneously
+
+For this assignment, I have used `PyGame` and `pydub` libraries. (to install them, follow the links above)
+ 
+The sound and music API's of `PyGame` and `pydub` are fairly simple. I feel funny basically going through the 
+documentation and re-iterating it.
+
+Sounds require the creation of sound objects that you have to hold on to. Much like images. 
+Sounds have a simple `.play()` method that will start playing the sound.
+
+So, we first have to init the mixer and load the sound:
+    
+        def init_sound(self, filename):
+            pygame.init()
+            pygame.mixer.init()
+            pygame.mixer.music.load(filename.encode('utf8'))
+
+
+__Note:__ Taking into consideration that creation of the User Interface is beyond of this course, I'll skip `Tk` code explanation.
+
+In order to get the second audio file played alongside the first one I used `AudioSegment` module of `pydub`.
+
+AudioSegment objects are immutable, and support a number of operators:
+* export
+* creation of a zero duration segment (`.empty()`)
+* volume manipulation
+* channels shuffling
+* frame rates manipulations
+* frame width manipulations
+* etc.
+
+The `another_song()` function asks `Tk` for the path to a new file. Creates an `AudioSegment`
+object and sends it to `PyGame`'s mixer in order to play it.
+
+        def another_song(self):
+                filename = tkFileDialog.askopenfilename()
+                sound = AudioSegment.from_mp3(filename)
+                sound.export("~/Desktop/music.wav", format="wav")
+                if not pygame.mixer.init():
+                    pygame.mixer.init()
+                snd1 = pygame.mixer.Sound("~/Desktop/music.wav")
+                snd1.play()
+
+
+## Lab 3: Video Processing
+
+#### Task1: Develop a desktop application that shows in real time the input from your webcam.
 
 
 
